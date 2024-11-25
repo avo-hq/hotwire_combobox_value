@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@josefarias/hotwire_combobox": "^0.3.2"
+  }
+}
