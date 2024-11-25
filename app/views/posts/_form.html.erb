@@ -18,7 +18,15 @@
 
   <div>
     <%= form.label :status, style: "display: block" %>
-    <%= form.combobox :status, hotwire_combobox_options_path %>
+    <%
+      value = post.status
+      # Ideally we should be able to pass the value as a hash or any object that responds to `value` & `display`
+      # value = {
+      #   value: "no_status",
+      #   display: "No Status"
+      # }
+    %>
+    <%= form.combobox :status, hotwire_combobox_options_path, value: value %>
   </div>
 
   <div>
