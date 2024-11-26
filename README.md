@@ -1,24 +1,17 @@
-# README
+1. 
+```
+bundle
+```
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+2. 
+```
+rails db:setup
+```
 
-Things you may want to cover:
+3.
+```
+rails s
+```
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+4.
+visit `localhost:3000`
