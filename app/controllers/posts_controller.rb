@@ -1,18 +1,25 @@
+require "net/http"
+
 class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
 
+  # This could be fetch from an HTTP endpoint or from a query, this might not be an association to a record
   def hotwire_combobox_options
-    # This could be fetch from an HTTP endpoint or from a query, this might not be an association to a record
-    options =  [
+    # Fetch products from an API
+    url = URI("https://dummyjson.com/products/search?q=#{params[:q]}")
+
+    # # Make the HTTP request
+    response = Net::HTTP.get(url)
+
+    # # Parse JSON response
+    data = JSON.parse(response)
+
+    options = data["products"].map do |item|
       {
-        value: "no_status",
-        display: "No Status"
-      },
-      {
-        value: "on_progress",
-        display: "On Progress"
+        value: item["id"],
+        display: item["title"]
       }
-    ]
+    end
 
     render turbo_stream: helpers.async_combobox_options(options)
   end

@@ -19,12 +19,23 @@
   <div>
     <%= form.label :status, style: "display: block" %>
     <%
-      value = post.status
-      # Ideally we should be able to pass the value as a hash or any object that responds to `value` & `display`
-      # value = {
-      #   value: "no_status",
-      #   display: "No Status"
-      # }
+      value = if post.status.present?
+        # Ideally we should be able to pass the value as a hash or any object that responds to `value` & `display`, or any other API that you think it's good
+        url = URI("https://dummyjson.com/products/#{post.status}")
+
+        # Make the HTTP request
+        response = Net::HTTP.get(url)
+
+        # Parse JSON response
+        data = JSON.parse(response)
+      
+        {
+          value: data["id"],
+          display: data["title"]
+        }
+      else
+        nil
+      end
     %>
     <%= form.combobox :status, hotwire_combobox_options_path, value: value %>
   </div>
