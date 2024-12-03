@@ -17,7 +17,6 @@
   </div>
 
   <div>
-    <%= form.label :status, style: "display: block" %>
     <%
       value = if post.status.present?
         # Ideally we should be able to pass the value as a hash or any object that responds to `value` & `display`, or any other API that you think it's good
@@ -29,16 +28,41 @@
         # Parse JSON response
         data = JSON.parse(response)
       
-        {
-          value: data["id"],
-          display: data["title"]
-        }
+        [data["id"], data["title"]]
       else
         nil
       end
+
+      # Only for select, combobox fetch options async
+      # Fetch products from an API
+      url = URI("https://dummyjson.com/products/search?q=#{params[:q]}")
+
+      # # Make the HTTP request
+      response = Net::HTTP.get(url)
+
+      # # Parse JSON response
+      data = JSON.parse(response)
+
+      options = data["products"].map do |item|
+        [item["title"], item["id"]]
+      end
     %>
+
+    <% if value.present? %>
+      </br>
+      Value is -> <%= value %>
+      </br>
+      </br>
+    <% end %>
+
+    <%= form.label :status, style: "display: block" %>
     <%= form.combobox :status, hotwire_combobox_options_path, value: value %>
   </div>
+  </br>
+  <%= form.label :status_select, style: "display: block" %>
+  <%= form.select :status_select, options_for_select(options, selected: value), include_blank: true %>
+  </br>
+  </br>
 
   <div>
     <%= form.submit %>
